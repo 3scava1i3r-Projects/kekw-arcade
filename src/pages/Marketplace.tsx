@@ -1,13 +1,62 @@
-import { useState } from "react";
-import { mockNFTs } from "@/data/mockData";
+import { useState, useEffect } from "react";
+import { mockNFTs, type NFTItem } from "@/data/mockData";
 import NFTCard from "@/components/NFTCard";
 
-const categories = ["all", "classic", "rare", "legendary"];
+interface ImgflipMeme {
+  id: string;
+  name: string;
+  url: string;
+  width: number;
+  height: number;
+  box_count: number;
+}
+
+const generateRandomPrice = (): string => {
+  const randomEth = (Math.random() * 0.5 + 0.01).toFixed(3);
+  return `${randomEth} ETH`;
+};
+
+const categories = ["all", "memes", "classic", "rare", "legendary"];
 
 const Marketplace = () => {
   const [filter, setFilter] = useState("all");
+  const [memes, setMemes] = useState<NFTItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filtered = filter === "all" ? mockNFTs : mockNFTs.filter((n) => n.category === filter);
+  useEffect(() => {
+    const fetchMemes = async () => {
+      try {
+        const response = await fetch("https://api.imgflip.com/get_memes");
+        const data = await response.json();
+        
+        if (data.success) {
+          const memesWithPrices: NFTItem[] = data.data.memes.slice(0, 30).map((meme: ImgflipMeme) => ({
+            id: meme.id,
+            title: meme.name,
+            creator: "Imgflip Community",
+            price: generateRandomPrice(),
+            image: meme.url,
+            category: "classic",
+            description: `A classic meme template - ${meme.box_count} text boxes`,
+            comments: [],
+          }));
+          setMemes(memesWithPrices);
+        }
+      } catch (error) {
+        console.error("Failed to fetch memes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMemes();
+  }, []);
+
+  const filtered = filter === "all" 
+    ? [...mockNFTs, ...memes] 
+    : filter === "memes" 
+      ? memes 
+      : mockNFTs.filter((n) => n.category === filter);
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-4 py-8">
@@ -30,6 +79,13 @@ const Marketplace = () => {
           </select>
         </div>
       </div>
+
+      {/* Loading */}
+      {loading && (
+        <div className="text-center py-8">
+          <p className="text-primary" style={{ fontSize: "12px" }}>Loading memes...</p>
+        </div>
+      )}
 
       {/* Grid */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

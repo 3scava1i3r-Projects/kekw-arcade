@@ -1,11 +1,44 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
+
+interface ImgflipMeme {
+  id: string;
+  name: string;
+  url: string;
+  width: number;
+  height: number;
+  box_count: number;
+}
 
 const CreateMeme = () => {
   const [topText, setTopText] = useState("");
   const [bottomText, setBottomText] = useState("");
   const [image, setImage] = useState<string | null>(null);
+  const [memes, setMemes] = useState<ImgflipMeme[]>([]);
+  const [showMemePicker, setShowMemePicker] = useState(false);
+  const [loading, setLoading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fetchMemes = async () => {
+      try {
+        const response = await fetch("https://api.imgflip.com/get_memes");
+        const data = await response.json();
+        if (data.success) {
+          setMemes(data.data.memes);
+        }
+      } catch (error) {
+        console.error("Failed to fetch memes:", error);
+      }
+    };
+    fetchMemes();
+  }, []);
+
+  const handleSelectMeme = (meme: ImgflipMeme) => {
+    setImage(meme.url);
+    setShowMemePicker(false);
+    toast.success("Meme template selected! 🖼️");
+  };
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,20 +67,29 @@ const CreateMeme = () => {
         {/* Upload */}
         <div className="mb-4">
           <label className="mb-2 block text-xs text-primary">Upload Image</label>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            onChange={handleUpload}
-            className="hidden"
-          />
-          <button
-            className="nes-btn is-primary"
-            onClick={() => fileRef.current?.click()}
-            style={{ fontSize: "10px" }}
-          >
-            Choose File
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              onChange={handleUpload}
+              className="hidden"
+            />
+            <button
+              className="nes-btn is-primary"
+              onClick={() => fileRef.current?.click()}
+              style={{ fontSize: "10px" }}
+            >
+              Choose File
+            </button>
+            <button
+              className="nes-btn is-success"
+              onClick={() => setShowMemePicker(true)}
+              style={{ fontSize: "10px" }}
+            >
+              Browse Memes
+            </button>
+          </div>
         </div>
 
         {/* Preview */}
@@ -121,6 +163,48 @@ const CreateMeme = () => {
           </button>
         </div>
       </div>
+
+      {/* Meme Picker Modal */}
+      {showMemePicker && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+          <div className="nes-container is-dark max-h-[80vh] w-full max-w-4xl overflow-auto">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-primary" style={{ fontSize: "14px" }}>
+                Select Meme Template
+              </h2>
+              <button
+                className="nes-btn is-error"
+                onClick={() => setShowMemePicker(false)}
+                style={{ fontSize: "10px" }}
+              >
+                Close
+              </button>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {memes.map((meme) => (
+                <button
+                  key={meme.id}
+                  onClick={() => handleSelectMeme(meme)}
+                  className="overflow-hidden rounded border-2 border-primary transition-transform hover:scale-105"
+                >
+                  <img
+                    src={meme.url}
+                    alt={meme.name}
+                    className="w-full"
+                    loading="lazy"
+                  />
+                  <p
+                    className="truncate bg-primary px-2 py-1 text-xs text-background"
+                    style={{ fontSize: "8px" }}
+                  >
+                    {meme.name}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 };

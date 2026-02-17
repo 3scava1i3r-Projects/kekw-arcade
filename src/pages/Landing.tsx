@@ -11,9 +11,21 @@ const Landing = () => {
         <h1 className="mb-4 text-primary" style={{ fontSize: "clamp(14px, 4vw, 24px)" }}>
           KEKW – Ain't That Funny
         </h1>
-        <p className="mb-8 text-accent" style={{ fontSize: "clamp(10px, 2.5vw, 14px)" }}>
+        <p className="mb-4 text-accent" style={{ fontSize: "clamp(10px, 2.5vw, 14px)" }}>
           Buy. Sell. Meme.<span className="animate-blink">_</span>
         </p>
+        {/* YouTube Embed */}
+        <div className="mb-8 w-full max-w-lg">
+          <div className="relative pb-[56.25%] h-0 overflow-hidden rounded-lg border-4 border-primary">
+            <iframe
+              className="absolute top-0 left-0 w-full h-full"
+              src="https://www.youtube.com/embed/mxpbwpU9HAo"
+              title="KEKW Intro"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/marketplace">
             <button className="nes-btn is-primary">Enter Marketplace</button>
