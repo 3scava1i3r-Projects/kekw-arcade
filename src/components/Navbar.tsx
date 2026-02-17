@@ -1,0 +1,40 @@
+import { Link, useLocation } from "react-router-dom";
+import mascot from "@/assets/mascot.png";
+
+const Navbar = () => {
+  const location = useLocation();
+
+  const links = [
+    { to: "/", label: "Home" },
+    { to: "/marketplace", label: "Market" },
+    { to: "/create", label: "Create" },
+    { to: "/profile", label: "Profile" },
+  ];
+
+  return (
+    <nav className="sticky top-0 z-50 border-b-4 border-primary bg-card px-4 py-3">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2">
+        <Link to="/" className="flex items-center gap-2">
+          <img src={mascot} alt="Kekw mascot" className="h-8 w-8" />
+          <span className="hidden text-xs text-primary sm:inline">KEKW</span>
+        </Link>
+        <div className="flex flex-wrap gap-2">
+          {links.map((link) => (
+            <Link key={link.to} to={link.to}>
+              <button
+                className={`nes-btn ${
+                  location.pathname === link.to ? "is-primary" : "is-success"
+                }`}
+                style={{ fontSize: "10px" }}
+              >
+                {link.label}
+              </button>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
