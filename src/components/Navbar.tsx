@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 border-b-4 border-primary bg-card px-4 py-3">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2">
         <Link to="/" className="flex items-center gap-2">
-          <img src={mascot} alt="Kekw mascot" className="h-8 w-8" />
+          <span className="text-xl">🐸</span>
           <span className="hidden text-xs text-primary sm:inline">KEKW</span>
         </Link>
         <div className="flex flex-wrap gap-2">

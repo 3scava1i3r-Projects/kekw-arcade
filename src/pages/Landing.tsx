@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import mascot from "@/assets/mascot.png";
 import heroBanner from "@/assets/hero-banner.png";
 
 const Landing = () => {
@@ -7,7 +6,8 @@ const Landing = () => {
     <main className="min-h-screen">
       {/* Hero */}
       <section className="flex flex-col items-center px-4 py-12 text-center">
-        <img src={mascot} alt="Kekw Mascot" className="animate-float mb-6 h-24 w-24 sm:h-32 sm:w-32" />
+        {/* <img src={mascot} alt="Kekw Mascot" className="animate-float mb-6 h-24 w-24 sm:h-32 sm:w-32" /> */}
+        <span className="text-4xl mb-4">🐸</span>
         <h1 className="mb-4 text-primary" style={{ fontSize: "clamp(14px, 4vw, 24px)" }}>
           KEKW – Ain't That Funny
         </h1>
