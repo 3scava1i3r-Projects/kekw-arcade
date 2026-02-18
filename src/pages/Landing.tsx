@@ -4,6 +4,11 @@ import heroBanner from "@/assets/hero-banner.png";
 const Landing = () => {
   return (
     <main className="min-h-screen">
+      {/* Prototype Notice Banner */}
+      <div className="bg-amber-600 text-amber-950 px-4 py-3 text-center text-sm font-semibold">
+        ⚠️ This is a web design prototype only. Plutopepe integration is currently unavailable and all smart contracts are temporarily offline.
+      </div>
+
       {/* Hero */}
       <section className="flex flex-col items-center px-4 py-12 text-center">
         {/* <img src={mascot} alt="Kekw Mascot" className="animate-float mb-6 h-24 w-24 sm:h-32 sm:w-32" /> */}
