@@ -1,8 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import mascot from "@/assets/mascot.png";
+import { useWallet } from "@/contexts/WalletContext";
 
 const Navbar = () => {
   const location = useLocation();
+  const { isConnected, walletAddress, connect, disconnect } = useWallet();
 
   const links = [
     { to: "/", label: "Home" },
@@ -18,7 +20,26 @@ const Navbar = () => {
           <span className="text-xl">🐸</span>
           <span className="hidden text-xs text-primary sm:inline">KEKW</span>
         </Link>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Wallet Status */}
+          {isConnected ? (
+            <button
+              onClick={disconnect}
+              className="nes-btn is-error"
+              style={{ fontSize: "10px" }}
+              title={walletAddress || "Connected"}
+            >
+              🔗 {walletAddress?.slice(0, 6)}...
+            </button>
+          ) : (
+            <button
+              onClick={connect}
+              className="nes-btn is-warning"
+              style={{ fontSize: "10px" }}
+            >
+              Connect
+            </button>
+          )}
           {links.map((link) => (
             <Link key={link.to} to={link.to}>
               <button

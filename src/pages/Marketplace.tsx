@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { mockNFTs, type NFTItem } from "@/data/mockData";
 import NFTCard from "@/components/NFTCard";
+import { useWallet } from "@/contexts/WalletContext";
+import ConnectWalletPrompt from "@/components/ConnectWalletPrompt";
 
 interface ImgflipMeme {
   id: string;
@@ -22,8 +24,17 @@ const Marketplace = () => {
   const [filter, setFilter] = useState("all");
   const [memes, setMemes] = useState<NFTItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isConnected } = useWallet();
 
+  // useEffect must be called before any early returns (Rules of Hooks)
   useEffect(() => {
+    // Only fetch when connected
+    if (!isConnected) {
+      setMemes([]);
+      setLoading(false);
+      return;
+    }
+    
     const fetchMemes = async () => {
       try {
         const response = await fetch("https://api.imgflip.com/get_memes");
@@ -50,7 +61,22 @@ const Marketplace = () => {
     };
 
     fetchMemes();
-  }, []);
+  }, [isConnected]);
+
+  // Early return AFTER all hooks (Rules of Hooks)
+  if (!isConnected) {
+    return (
+      <main className="mx-auto min-h-screen max-w-6xl px-4 py-8">
+        <h1 className="mb-6 text-center text-primary" style={{ fontSize: "18px" }}>
+          Marketplace
+        </h1>
+        <ConnectWalletPrompt 
+          title="Connect to Access Marketplace"
+          message="Connect your wallet to browse and purchase memes on the KEKW marketplace."
+        />
+      </main>
+    );
+  }
 
   const filtered = filter === "all" 
     ? [...mockNFTs, ...memes] 

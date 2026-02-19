@@ -1,73 +1,90 @@
-# Welcome to your Lovable project
+# KEKW Arcade 🐸
 
-## Project info
+A meme NFT marketplace built with React, TypeScript, and modern web technologies. Buy, sell, and create meme NFTs on the KEKW marketplace.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+![KEKW Arcade](https://img.shields.io/badge/React-18.3-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue) ![Vite](https://img.shields.io/badge/Vite-5.4-purple)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Browse Marketplace** - Explore meme NFTs from the Imgflip API
+- **Create Memes** - Upload or select meme templates and add your own text
+- **Wallet Integration** - Connect your wallet to access marketplace features
+- **Profile** - View your owned NFTs and created memes
+- **NES-style UI** - Retro gaming aesthetic with pixel art design
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Frontend Framework**: React 18 with TypeScript
+- **Build Tool**: Vite 5
+- **Styling**: Tailwind CSS + shadcn-ui components
+- **Routing**: React Router DOM
+- **Notifications**: Sonner toast notifications
+- **Testing**: Vitest
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+ 
+- npm or bun
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+```bash
+# Clone the repository
+git clone <repository-url>
+cd kekw-arcade
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Available Scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Run ESLint |
+| `npm run test` | Run tests |
 
-**Use GitHub Codespaces**
+## Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # shadcn-ui components
+│   ├── NFTCard.tsx     # NFT display card
+│   ├── Navbar.tsx      # Navigation bar
+│   └── ConnectWalletPrompt.tsx
+├── contexts/           # React contexts
+│   └── WalletContext.tsx
+├── pages/              # Page components
+│   ├── Marketplace.tsx # NFT marketplace
+│   ├── CreateMeme.tsx  # Meme creator
+│   ├── Profile.tsx     # User profile
+│   └── Landing.tsx     # Landing page
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions
+└── data/               # Mock data
+```
 
-## What technologies are used for this project?
+## Wallet Integration
 
-This project is built with:
+The app uses a mock wallet implementation for demonstration. In production, you would integrate with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- MetaMask
+- WalletConnect
+- RainbowKit
 
-## How can I deploy this project?
+## API Integration
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- **Imgflip API** - Fetches popular meme templates for the marketplace and meme creator
 
-## Can I connect a custom domain to my Lovable project?
+## License
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+MIT

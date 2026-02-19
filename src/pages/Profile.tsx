@@ -1,10 +1,25 @@
 import { mockNFTs, userProfile } from "@/data/mockData";
 import NFTCard from "@/components/NFTCard";
 import { toast } from "sonner";
+import { useWallet } from "@/contexts/WalletContext";
+import ConnectWalletPrompt from "@/components/ConnectWalletPrompt";
 
 const Profile = () => {
+  const { isConnected, walletAddress, connect, disconnect } = useWallet();
   const owned = mockNFTs.filter((n) => userProfile.ownedNFTs.includes(n.id));
   const created = mockNFTs.filter((n) => userProfile.createdMemes.includes(n.id));
+
+  // Show connect prompt if not connected
+  if (!isConnected) {
+    return (
+      <main className="mx-auto min-h-screen max-w-4xl px-4 py-8">
+        <ConnectWalletPrompt 
+          title="Connect Your Wallet"
+          message="Connect your wallet to view your profile, owned NFTs, and created memes."
+        />
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto min-h-screen max-w-4xl px-4 py-8">
@@ -20,14 +35,14 @@ const Profile = () => {
           {userProfile.name}
         </h1>
         <p className="mb-4 text-muted-foreground" style={{ fontSize: "10px" }}>
-          {userProfile.wallet}
+          {walletAddress}
         </p>
         <button
-          className="nes-btn is-warning"
+          className="nes-btn is-error"
           style={{ fontSize: "10px" }}
-          onClick={() => toast.success("Wallet connected! 🔗")}
+          onClick={disconnect}
         >
-          Connect Wallet
+          Disconnect
         </button>
       </div>
 

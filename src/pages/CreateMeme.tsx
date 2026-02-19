@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
+import { useWallet } from "@/contexts/WalletContext";
+import ConnectWalletPrompt from "@/components/ConnectWalletPrompt";
 
 interface ImgflipMeme {
   id: string;
@@ -18,8 +20,16 @@ const CreateMeme = () => {
   const [showMemePicker, setShowMemePicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const { isConnected, connect } = useWallet();
 
+  // useEffect must be called before any early returns (Rules of Hooks)
   useEffect(() => {
+    // Only fetch when connected
+    if (!isConnected) {
+      setMemes([]);
+      return;
+    }
+    
     const fetchMemes = async () => {
       try {
         const response = await fetch("https://api.imgflip.com/get_memes");
@@ -32,7 +42,22 @@ const CreateMeme = () => {
       }
     };
     fetchMemes();
-  }, []);
+  }, [isConnected]);
+
+  // Early return AFTER all hooks (Rules of Hooks)
+  if (!isConnected) {
+    return (
+      <main className="mx-auto min-h-screen max-w-2xl px-4 py-8">
+        <h1 className="mb-6 text-center text-primary" style={{ fontSize: "18px" }}>
+          Create Meme
+        </h1>
+        <ConnectWalletPrompt 
+          title="Connect to Create Memes"
+          message="Connect your wallet to create and mint your own memes on the KEKW marketplace."
+        />
+      </main>
+    );
+  }
 
   const handleSelectMeme = (meme: ImgflipMeme) => {
     setImage(meme.url);

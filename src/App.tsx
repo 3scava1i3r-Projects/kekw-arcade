@@ -11,27 +11,30 @@ import CreateMeme from "@/pages/CreateMeme";
 import NFTDetail from "@/pages/NFTDetail";
 import Profile from "@/pages/Profile";
 import NotFound from "./pages/NotFound";
+import { WalletProvider } from "@/contexts/WalletContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/create" element={<CreateMeme />} />
-          <Route path="/nft/:id" element={<NFTDetail />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </TooltipProvider>
+    <WalletProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/create" element={<CreateMeme />} />
+            <Route path="/nft/:id" element={<NFTDetail />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </TooltipProvider>
+    </WalletProvider>
   </QueryClientProvider>
 );
 
